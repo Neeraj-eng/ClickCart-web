@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../axios";
 import { BiSun, BiMoon } from "react-icons/bi";
 import { BsCartFill } from "react-icons/bs"; // Bootstrap-style cart from React Icons
 
@@ -26,7 +26,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/products");
+      const response = await API.get("/products");
       setSearchResults(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -42,8 +42,8 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
     if (value.length >= 1) {
       setShowSearchResults(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/products/search?keyword=${value}`
+        const response = await API.get(
+          `/products/search?keyword=${value}`
         );
         setSearchResults(response.data);
         setNoResults(response.data.length === 0);
@@ -117,17 +117,16 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
             </ul>
             
             <a className="nav-link px-2" href="/login">Login</a>
-            {/* 🌗 Theme Toggle */}
+      
             <button className="btn btn-link me-3" onClick={toggleTheme}>
               {theme === "dark-theme" ? <BiSun size={22} /> : <BiMoon size={22} />}
             </button>
 
-            {/* 🛒 Cart Icon */}
+          
             <a href="/cart" className="nav-link me-3">
               <BsCartFill size={22} />
             </a>
 
-            {/* 🔍 Search */}
             <div className="d-flex align-items-center position-relative">
               <input
                 className="form-control me-2"
@@ -141,7 +140,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
                   {searchResults.length > 0 ? (
                     searchResults.map((result) => (
                       <li key={result.id} className="list-group-item">
-                        <a href={`/product/${result.id}`} className="search-result-link">
+                        <a href={`/product/${result._id}`} className="search-result-link">
                           {result.name}
                         </a>
                       </li>

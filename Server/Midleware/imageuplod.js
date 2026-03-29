@@ -1,10 +1,10 @@
+const path = require("path");
+const fs = require("fs")
+const cloudinary = require("cloudinary").v2;
 
 function issupported(imagetype,validtype){
     return validtype.includes(imagetype)
 }
-
-const path = require("path");
-const cloudinary = require("cloudinary").v2;
 
 async function uploadcloudinary(file, folder, quality) {
     try {
@@ -25,10 +25,12 @@ async function uploadcloudinary(file, folder, quality) {
 
         console.log("Upload success:", result);
 
+        fs.unlinkSync(filePath);
+
         return result;
 
     } catch (error) {
-        console.log("Cloudinary ERROR:", error);  // 🔥 THIS WILL SHOW REAL ISSUE
+        console.log("Cloudinary ERROR:", error);
     }
 }
 
@@ -60,6 +62,7 @@ exports.imageupload = async (req,res,next) => {
         req.imageurl = response.secure_url
         next()
     }catch(err){
+        console.log("image upload err")
         return res.status(400).json({
             message : `hii ${err.message}`
         })

@@ -37,7 +37,7 @@ exports.signup = async (req, res) => {
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: "1h"
+            expiresIn: "3d"
         })
 
         user = user.toObject();
@@ -46,9 +46,10 @@ exports.signup = async (req, res) => {
 
         res.cookie("token",token,{
             httpOnly:true,
+            sameSite: 'none',
             secure:false
         })
-
+    
         return res.status(200).json({
             message: "user registred successfully",
             user

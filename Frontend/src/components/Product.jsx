@@ -2,37 +2,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { useState } from "react";
 import AppContext from "../Context/Context";
-import axios from "../axios";
 import UpdateProduct from "./UpdateProduct";
+import API from "../axios";
 const Product = () => {
   const { id } = useParams();
   const { data, addToCart, removeFromCart, cart, refreshData } =
     useContext(AppContext);
   const [product, setProduct] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/product/${id}`
-        );
-        setProduct(response.data);
-        if (response.data.imagename) {
-          fetchImage();
-        }
+        const response = await API.get(`/product/${id}`);
+        setProduct(response.data); 
       } catch (error) {
         console.error("Error fetching product:", error);
       }
-    };
-
-    const fetchImage = async () => {
-      const response = await axios.get(
-        `http://localhost:8080/api/product/${id}/image`,
-        { responseType: "blob" }
-      );
-      setImageUrl(URL.createObjectURL(response.data));
     };
 
     fetchProduct();
@@ -40,7 +26,7 @@ const Product = () => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/product/${id}`);
+      await API.delete(`/product/${id}`);
       removeFromCart(id);
       console.log("Product deleted successfully");
       alert("Product deleted successfully");
@@ -55,31 +41,31 @@ const Product = () => {
     navigate(`/product/update/${id}`);
   };
 
- const handlAddToCart = () => {
-  if (product.quantity > 0) {
-    addToCart(product);
-    setProduct(prev => ({ ...prev, quantity: prev.quantity - 1 }));
-    alert("Product added to cart");
+  const handlAddToCart = () => {
+    if (product.quantity > 0) {
+      addToCart(product);
+      setProduct(prev => ({ ...prev, quantity: prev.quantity - 1 }));
+      alert("Product added to cart");
+    }
+  };
+
+  if (!product) {
+    return (
+      <h2 className="text-center" style={{ padding: "10rem" }}>
+        Loading...
+      </h2>
+    );
   }
-};
 
-if (!product) {
-  return (
-    <h2 className="text-center" style={{ padding: "10rem" }}>
-      Loading...
-    </h2>
-  );
-}
-
-const isAvailable = product?.quantity > 0;
+  const isAvailable = product?.quantity > 0;
   return (
     <>
       <div className="containers" style={{ display: "flex" }}>
-        {imageUrl ? (
+        {product.image ? (
           <img
             className="left-column-img"
-            src={imageUrl}
-            alt={product.imagename || "Product image"}
+            src={product.image}
+            alt={"Product image"}
             style={{ width: "50%", height: "auto" }}
           />
         ) : (
@@ -108,7 +94,7 @@ const isAvailable = product?.quantity > 0;
               </span>
               <div className="release-date" style={{ marginBottom: "2rem" }}>
                 <h6>
-                  Listed : <span><i>{new Date(product.release_date).toLocaleDateString()}</i></span>
+                  Listed : <span><i>{new Date(product.date).toLocaleDateString()}</i></span>
                 </h6>
               </div>
 

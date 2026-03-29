@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import API from "../axios";
 
 const UpdateProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null)
   const [updateProduct, setUpdateProduct] = useState({
     id: null,
     name: "",
@@ -13,27 +14,29 @@ const UpdateProduct = () => {
     brand: "",
     price: "",
     category: "",
-    release_date: "",
+    date: "",
     productAvailable: false,
     quantity: "",
   });
 
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/product/${id}`
+        const response = await API.get(
+          `/product/${id}`
         );
 
-        setProduct(response.data);
-      
-        const responseImage = await axios.get(
-          `http://localhost:8080/api/product/${id}/image`,
-          { responseType: "blob" }
-        );
-       const imageFile = await converUrlToFile(responseImage.data,response.data.imagename)
-        setImage(imageFile);     
-        setUpdateProduct(response.data);
+        setProduct(response.data)
+        setUpdateProduct({
+          name: response.data.name || "",
+          description: response.data.description || "",
+          brand: response.data.brand || "",
+          price: response.data.price || "",
+          category: response.data.category || "",
+          quantity: response.data.quantity || "",
+          productAvailable: response.data.productAvailable || false,
+        });
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -42,47 +45,56 @@ const UpdateProduct = () => {
     fetchProduct();
   }, [id]);
 
-  useEffect(() => {
-    console.log("image Updated", image);
-  }, [image]);
 
 
 
-  const converUrlToFile = async(blobData, fileName) => {
-    const file = new File([blobData], fileName, { type: blobData.type });
-    return file;
-  }
- 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    console.log("images", image)
-    console.log("productsdfsfsf", updateProduct)
-    const updatedProduct = new FormData();
-    updatedProduct.append("imageFile", image);
-    updatedProduct.append(
-      "product",
-      new Blob([JSON.stringify(updateProduct)], { type: "application/json" })
+
+  const uploadImageToCloudinary = async () => {
+    if (!image) return product.image; // keep old image
+
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "YOUR_UPLOAD_PRESET");
+    formData.append("folder", "neeraj");
+    
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/ducsup5k1/image/upload",
+      formData
     );
-  
 
-  console.log("formData : ", updatedProduct)
-    axios
-      .put(`http://localhost:8080/api/product/${id}`, updatedProduct, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("Product updated successfully:", updatedProduct);
-        alert("Product updated successfully!");
-      })
-      .catch((error) => {
-        console.error("Error updating product:", error);
-        console.log("product unsuccessfull update",updateProduct)
-        alert("Failed to update product. Please try again.");
-      });
+    return res.data.secure_url;
   };
- 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Step 1: Upload image (if changed)
+      const imageUrl = await uploadImageToCloudinary();
+
+      // Step 2: Prepare clean data
+      const updatedData = {
+        name: updateProduct.name,
+        description: updateProduct.description,
+        brand: updateProduct.brand,
+        price: Number(updateProduct.price),
+        category: updateProduct.category,
+        quantity: Number(updateProduct.quantity),
+        productAvailable: updateProduct.productAvailable,
+        image: imageUrl,
+      };
+
+      // Step 3: Send JSON to backend
+      const response = await API.put(`/product/${id}`, updatedData);
+
+      console.log("Updated:", response.data);
+      alert("Product updated successfully!");
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Failed to update product");
+    }
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,15 +103,15 @@ const UpdateProduct = () => {
       [name]: value,
     });
   };
-  
+
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
-  
+
 
   return (
     <div className="update-product-container" >
-      <div className="center-container"style={{marginTop:"7rem"}}>
+      <div className="center-container" style={{ marginTop: "7rem" }}>
         <h1>Update Product</h1>
         <form className="row g-3 pt-1" onSubmit={handleSubmit}>
           <div className="col-md-6">
@@ -169,12 +181,12 @@ const UpdateProduct = () => {
               id="category"
             >
               <option value="">Select category</option>
-              <option value="laptop">Laptop</option>
-              <option value="headphone">Headphone</option>
-              <option value="mobile">Mobile</option>
-              <option value="electronics">Electronics</option>
-              <option value="toys">Toys</option>
-              <option value="fashion">Fashion</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Headphone">Headphone</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Toys">Toys</option>
+              <option value="Fashion">Fashion</option>
             </select>
           </div>
 
@@ -197,7 +209,7 @@ const UpdateProduct = () => {
               <h6>Image</h6>
             </label>
             <img
-              src={image ? URL.createObjectURL(image) : "Image unavailable"}
+              src={image ? URL.createObjectURL(image) : product.image}
               alt={product.imagename}
               style={{
                 width: "100%",
@@ -212,8 +224,8 @@ const UpdateProduct = () => {
               type="file"
               onChange={handleImageChange}
               placeholder="Upload image"
-              name="imageUrl"
-              id="imageUrl"
+              name="image"
+              id="image"
             />
           </div>
           <div className="col-12">

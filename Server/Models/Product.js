@@ -19,7 +19,7 @@ const productshema = mongoose.Schema({
     },
     category : {
         type : String,
-        enum : ["Slect category","Laptop","HeadPhone","Mobile","Electronics","Toys","Fasion"],
+        enum : ["Slect category","Laptop","Headphone","Mobile","Electronics","Toys","Fasion"],
         required : true
     },
     quantity  : {
@@ -29,18 +29,21 @@ const productshema = mongoose.Schema({
     },
     date : {
         type: String,
-        default: Date.now
+        default : () => {
+            const d = new Date();
+            return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+        }
     },
     image: {
         type: String,
         required: true
-    },
-    createdBy : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User",
     }
+    // createdBy : {
+    //     type : mongoose.Schema.Types.ObjectId,
+    //     ref : "User",
+    // }
 },{
-    timestamps: true   // 🔥 important
+    timestamps: true 
 })
 
 module.exports = mongoose.model("Product",productshema);

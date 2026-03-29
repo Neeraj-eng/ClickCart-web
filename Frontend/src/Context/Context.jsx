@@ -21,7 +21,7 @@ export const AppProvider = ({ children }) => {
   const addToCart = (product) => {
     if (product.quantity <= 0) return;
 
-    const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+    const existingProductIndex = cart.findIndex((item) => item._id === product._id);
     if (existingProductIndex !== -1) {
       const updatedCart = cart.map((item, index) =>
         index === existingProductIndex
@@ -36,12 +36,12 @@ export const AppProvider = ({ children }) => {
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
 
-    updateStockQuantity(product.id, product.quantity - 1);
+    updateStockQuantity(product._id, product.quantity - 1);
   };
 
 
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter((item) => item.id !== productId);
+    const updatedCart = cart.filter((item) => item._id !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
@@ -70,7 +70,7 @@ export const AppProvider = ({ children }) => {
   const updateStockQuantity = (productId, newQuantity) => {
     setData(prevData =>
       prevData.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        item._id === productId ? { ...item, quantity: newQuantity } : item
       )
     );
   };

@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import API from "../axios";
 import AppContext from "../Context/Context";
 import unplugged from "../assets/unplugged.png"
 import Footer from "./Footer";
 
 const Home = ({ selectedCategory }) => {
   const { data, isError, addToCart, refreshData } = useContext(AppContext);
-  const [products, setProducts] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  
+
 
 
   useEffect(() => {
@@ -19,43 +18,15 @@ const Home = ({ selectedCategory }) => {
     }
   }, [refreshData, isDataFetched]);
 
-  useEffect(() => {
-    if (data && data.length > 0) {
-      const fetchImagesAndUpdateProducts = async () => {
-        const updatedProducts = await Promise.all(
-          data.map(async (product) => {
-            try {
-              const response = await axios.get(
-                `http://localhost:8080/api/product/${product.id}/image`,
-                { responseType: "blob" }
-              );
-              const imageUrl = URL.createObjectURL(response.data);
-              return { ...product, imageUrl };
-            } catch (error) {
-              console.error(
-                "Error fetching image for product ID:",
-                product.id,
-                error
-              );
-              return { ...product, imageUrl: "placeholder-image-url" };
-            }
-          })
-        );
-        setProducts(updatedProducts);
-      };
-
-      fetchImagesAndUpdateProducts();
-    }
-  }, [data]);
 
   const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+    ? data.filter((product) => product.category === selectedCategory)
+    : data;
 
   if (isError) {
     return (
       <h2 className="text-center" style={{ padding: "18rem" }}>
-      <img src={unplugged} alt="Error" style={{ width: '100px', height: '100px' }}/>
+        <img src={unplugged} alt="Error" style={{ width: '100px', height: '100px' }} />
       </h2>
     );
   }
@@ -84,7 +55,7 @@ const Home = ({ selectedCategory }) => {
           </h2>
         ) : (
           filteredProducts.map((product) => {
-            const { id, brand, name, price, quantity, imageUrl } = product;
+            const { _id, brand, name, price, quantity, image } = product;
             const isAvailable = quantity > 0;
 
             const cardStyle = {
@@ -101,29 +72,29 @@ const Home = ({ selectedCategory }) => {
                   height: "360px",
                   boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                   borderRadius: "10px",
-                  overflow: "hidden", 
+                  overflow: "hidden",
                   backgroundColor: isAvailable ? "#fff" : "#ccc",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent:'flex-start',
-                  alignItems:'stretch'
+                  justifyContent: 'flex-start',
+                  alignItems: 'stretch'
                 }}
-                key={id}
+                key={_id}
               >
                 <Link
-                  to={`/product/${id}`}
+                  to={`/product/${_id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <img
-                    src={imageUrl}
+                    src={image}
                     alt={name}
                     style={{
                       width: "100%",
-                      height: "150px", 
-                      objectFit: "cover",  
+                      height: "150px",
+                      objectFit: "cover",
                       padding: "5px",
                       margin: "0",
-                      borderRadius: "10px 10px 10px 10px", 
+                      borderRadius: "10px 10px 10px 10px",
                     }}
                   />
                   <div
@@ -154,7 +125,7 @@ const Home = ({ selectedCategory }) => {
                     <div className="home-cart-price">
                       <h5
                         className="card-text"
-                        style={{ fontWeight: "600", fontSize: "1.1rem",marginBottom:'5px' }}
+                        style={{ fontWeight: "600", fontSize: "1.1rem", marginBottom: '5px' }}
                       >
                         <i className="bi bi-currency-rupee"></i>
                         {price}
@@ -162,7 +133,7 @@ const Home = ({ selectedCategory }) => {
                     </div>
                     <button
                       className="btn-hover color-9"
-                      style={{margin:'10px 25px 0px '  }}
+                      style={{ margin: '10px 25px 0px ' }}
                       onClick={(e) => {
                         e.preventDefault();
                         addToCart(product);
@@ -170,7 +141,7 @@ const Home = ({ selectedCategory }) => {
                       disabled={!isAvailable}
                     >
                       {isAvailable ? "Add to Cart" : "Out of Stock"}
-                    </button> 
+                    </button>
                   </div>
                 </Link>
               </div>
@@ -178,7 +149,7 @@ const Home = ({ selectedCategory }) => {
           })
         )}
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
