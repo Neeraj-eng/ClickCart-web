@@ -72,10 +72,20 @@ exports.deleteProduct = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
+
+   const updateData = { ...req.body };
+
+    if (req.imageurl) {
+      updateData.image = req.imageurl;
+    }
+
+    console.log(updateData.image)
+    console.log(req.imageurl)
+
   try {
     const updated = await Product.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true }
     );
 

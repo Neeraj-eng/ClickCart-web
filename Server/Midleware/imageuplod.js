@@ -36,6 +36,7 @@ async function uploadcloudinary(file, folder, quality) {
 
 exports.imageupload = async (req,res,next) => {
     try{
+         console.log("files",req.files);
         const file = req.files.image;
         console.log(file);
         const imagetype = file.name.split(".").pop().toLowerCase();

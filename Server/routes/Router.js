@@ -12,7 +12,7 @@ router.get("/products/search",serchProducts)
 router.get("/products",getProducts)
 router.get("/product/:id",getProduct)
 router.delete("/product/:id",deleteProduct)
-router.post("/product/:id",updateProduct)
+router.put("/product/:id",imageupload,updateProduct)
 
 router.get("/great",(req,res) => {
     return res.status(200).json({

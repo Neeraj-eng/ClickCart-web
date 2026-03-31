@@ -47,7 +47,8 @@ exports.signup = async (req, res) => {
         res.cookie("token",token,{
             httpOnly:true,
             sameSite: 'none',
-            secure:false
+            secure:false,
+            age : 7 * 24 * 60 * 60
         })
     
         return res.status(200).json({
