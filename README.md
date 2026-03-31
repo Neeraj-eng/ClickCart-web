@@ -1,12 +1,129 @@
-# React + Vite
+# 🛒 ClickCart - E-commerce Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
 
-Currently, two official plugins are available:
+ClickCart is a full-stack e-commerce web application that allows users to browse products, add items to cart, and securely place orders. It provides a smooth and user-friendly shopping experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* 🔍 Browse and search products
+* 🛒 Add to cart & remove items
+* 💳 Secure checkout system
+* 👤 User authentication (Login/Signup)
+* 📦 Order management
+* 🖼️ Image upload using Cloudinary
+* 📱 Responsive design (Mobile + Desktop)
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+
+* React.js
+* HTML, CSS, JavaScript
+
+**Backend:**
+
+* Node.js
+* Express.js
+
+**Database:**
+
+* MongoDB
+
+**Other Tools:**
+
+* Cloudinary (Image Upload)
+* Git & GitHub
+
+---
+
+## 📂 Folder Structure
+
+```
+clickcart/
+│── frontend/
+│── backend/
+│── models/
+│── routes/
+│── controllers/
+│── middleware/
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the repository
+
+```
+git clone <your-repo-link>
+cd clickcart
+```
+
+### 2️⃣ Install dependencies
+
+```
+npm install
+cd frontend
+npm install
+```
+
+### 3️⃣ Setup environment variables
+
+Create a `.env` file in backend folder:
+
+```
+MONGO_URI=your_mongodb_url
+CLOUDINARY_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+JWT_SECRET=your_secret_key
+```
+
+### 4️⃣ Run the project
+
+Backend:
+
+```
+npm run server
+```
+
+Frontend:
+
+```
+npm start
+```
+
+---
+
+## 📸 Screenshots
+
+(Add screenshots of your project here)
+
+---
+
+## 🎯 Future Improvements
+
+* 🧾 Payment gateway integration (Razorpay/Stripe)
+* ⭐ Product reviews & ratings
+* 🛍️ Wishlist feature
+* 🔔 Notifications system
+
+---
+
+## 👨‍💻 Author
+
+**Your Name**
+
+* GitHub: (your profile link)
+* LinkedIn: (your profile link)
+
+---
+
+## ⭐ Conclusion
+
+ClickCart demonstrates my skills in full-stack development, REST APIs, and building scalable web applications.
