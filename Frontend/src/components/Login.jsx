@@ -22,7 +22,6 @@ export default function Login() {
           headers: {
             "Content-Type": "application/json"
           },
-          withCredentials: true
         }
       );
 
@@ -34,11 +33,49 @@ export default function Login() {
   }
 
   return (
-    <div className="container">
-      <div className="center-container">
-        <form className="row g-3 pt-5" onSubmit={loginhandle}>
-          <h2>Login to your account</h2>
-          <p>Enter your details below</p>
+    <div
+      className="container"
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "10px",
+      }}
+    >
+      <div
+        className="center-container"
+        style={{
+          width: "100%",
+          maxWidth: "360px",
+          padding: "20px",
+          borderRadius: "10px",
+          background: "#111827",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
+          color: "white",
+        }}
+      >
+        <form
+          className="row g-2 pt-3"
+          onSubmit={loginhandle}
+        >
+          <h2
+            style={{
+              fontSize: "22px",
+              // fontWeight: "600",
+            }}
+          >
+            Login to your account
+          </h2>
+
+          <p
+            style={{
+              fontSize: "13px",
+              marginBottom: "15px",
+            }}
+          >
+            Enter your details below
+          </p>
 
           <div className="col-12">
             <input
@@ -47,8 +84,16 @@ export default function Login() {
               value={user.email}
               placeholder="@gmail.com"
               required
-              className="form-control"
               onChange={inputChange}
+              style={{
+                width: "100%",
+                height: "40px",
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #374151",
+                fontSize: "14px",
+                outline: "none",
+              }}
             />
           </div>
 
@@ -58,36 +103,53 @@ export default function Login() {
               name="password"
               placeholder="Password"
               required
-              className="form-control"
               onChange={inputChange}
               value={user.password}
+              style={{
+                width: "100%",
+                height: "40px",
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #374151",
+                fontSize: "14px",
+                outline: "none",
+                marginTop: "12px"
+
+              }}
             />
           </div>
 
           <div className="col-12">
-            <button type="submit" className="btn btn-primary w-100">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{
+                width: "100%",
+                cursor: "pointer",
+                transition: "0.2s",
+                marginTop: "12px"
+              }}
+            >
               Login
             </button>
           </div>
 
-          {/* Optional Google Login Button */}
-          {/* 
-          <div className="col-12">
-            <button type="button" className="btn btn-outline-secondary w-100">
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="google"
-                className="me-2"
-              />
-              Login with Google
-            </button>
-          </div>
-          */}
-
-          <p className="mt-3">
+          <p
+            style={{
+              fontSize: "13px",
+              marginTop: "10px",
+            }}
+          >
             Don't have an account?{" "}
-            <NavLink to="/signup">
-              <span>Sign up / Register</span>
+            <NavLink
+              to="/signup"
+              style={{
+                color: "#3b82f6",
+                textDecoration: "none",
+                display: "inline",
+              }}
+            >
+              Signup / Register
             </NavLink>
           </p>
         </form>

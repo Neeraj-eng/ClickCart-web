@@ -90,7 +90,7 @@ const Cart = () => {
                   </div>
 
                   {/* ✅ Quantity */}
-                  <div className="quantity" style={{ marginLeft: "20px" }}>
+                  <div className="quantity" style={{ marginLeft: "20px" , color : "black" }}>
                     <button onClick={() => handleIncreaseQuantity(item._id)}>
                       +
                     </button>
@@ -118,7 +118,7 @@ const Cart = () => {
                   {/* ✅ Remove */}
                   <button
                     onClick={() => handleRemoveFromCart(item._id)}
-                    style={{ marginLeft: "20px" }}
+                    style={{ marginLeft: "20px" , color : "black" }}
                   >
                     🗑
                   </button>

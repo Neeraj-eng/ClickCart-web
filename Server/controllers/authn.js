@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
             })
         }
         let hashpassword;
+
         try {
             hashpassword = await bcrypt.hash(password, 10);
         } catch (err) {
@@ -31,26 +32,13 @@ exports.signup = async (req, res) => {
             name, email, password: hashpassword, role
         })
 
-        const payload = {
-            role: role,
-            id: user._id
-        }
-
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: "3d"
-        })
+       
 
         user = user.toObject();
-        user.token = token;
         user.password = undefined
 
-        res.cookie("token",token,{
-            httpOnly:true,
-            sameSite: 'none',
-            secure:false,
-            age : 7 * 24 * 60 * 60
-        })
-    
+
+
         return res.status(200).json({
             message: "user registred successfully",
             user
@@ -83,19 +71,38 @@ exports.login = async (req, res) => {
 
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (isMatch) {
-            res.status(200).json({
-                message: "user logedin succesfully",
-                user: {
-                    name: user.name
-                }
-            })
-        } else {
+        if (!isMatch) {
             return res.status(401).json({
                 message: "incoorect password"
             })
         }
+
+        const payload = {
+            role: user.role,
+            id: user._id
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: "3d"
+        })
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: false,
+            age: 7 * 24 * 60 * 60 * 1000,
+            path: '/'
+        })
+
+        res.status(200).json({
+            message: "user logedin succesfully",
+            user: {
+                name: user.name
+            }
+        })
+
     } catch (err) {
+        console.log("login error")
         res.status(400).json({
             message: err.message
         })

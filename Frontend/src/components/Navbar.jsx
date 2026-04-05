@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import API from "../axios";
 import { BiSun, BiMoon } from "react-icons/bi";
 import { BsCartFill } from "react-icons/bs"; // Bootstrap-style cart from React Icons
+import AppContext from "../Context/Context";
 
 
 const Navbar = ({ onSelectCategory, onSearch }) => {
@@ -13,6 +14,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const {cart} = useContext(AppContext)
 
   useEffect(() => {
     document.body.className = theme;
@@ -123,8 +125,19 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
             </button>
 
           
-            <a href="/cart" className="nav-link me-3">
-              <BsCartFill size={22} />
+            <a href="/cart" className="nav-link me-3" style={{ position: "relative" }}>
+            {(cart.length>=1) ? ( <div style={{
+                  position: "absolute",
+                  top: "-3px",
+                  right: "-7px",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  padding: "2px 6px",
+                  fontSize: "8px",
+                  fontWeight: "bold",
+               }}>{cart.length}</div>) : (<></>)}
+               <BsCartFill size={22} />
             </a>
 
             <div className="d-flex align-items-center position-relative">

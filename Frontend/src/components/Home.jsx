@@ -4,6 +4,7 @@ import API from "../axios";
 import AppContext from "../Context/Context";
 import unplugged from "../assets/unplugged.png"
 import Footer from "./Footer";
+import toast from "react-hot-toast";
 
 const Home = ({ selectedCategory }) => {
   const { data, isError, addToCart, refreshData } = useContext(AppContext);
@@ -137,6 +138,7 @@ const Home = ({ selectedCategory }) => {
                       onClick={(e) => {
                         e.preventDefault();
                         addToCart(product);
+                        toast.success("added successfully");
                       }}
                       disabled={!isAvailable}
                     >

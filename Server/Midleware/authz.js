@@ -4,8 +4,9 @@ require("dotenv").config()
 exports.isAuthenticate = async (req,res,next) => {
     try{
          const token = req.body?.token || req.cookies?.token || req.header("Authorization")?.split(" ")[1];
+         console.log("token",token);
         if(!token){
-            console.log("token is missing")
+            console.log("token is missing",req.cookies)
             return res.status(400).json({
                 message : "token missing"
             })

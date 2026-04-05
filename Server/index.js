@@ -11,6 +11,10 @@ require("dotenv").config()
 connect();
 cloudinaryconnect();
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.json())
@@ -19,11 +23,6 @@ app.use(fileupload({
   useTempFiles : true,
   tempFileDir: "./tmp/"
 }))
-
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
 
 
 app.get("/",(req,res)=>{

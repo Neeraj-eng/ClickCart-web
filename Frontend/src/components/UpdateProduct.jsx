@@ -92,7 +92,9 @@ const UpdateProduct = () => {
       // };
 
       // Step 3: Send JSON to backend
-      const response = await API.put(`/product/${id}`, fromdata);
+      const response = await API.put(`/product/${id}`, fromdata,{
+          withCredentials: true,
+        });
 
       console.log("Updated:", response.data);
       alert("Product updated successfully!");

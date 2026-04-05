@@ -7,11 +7,11 @@ const {isAuthenticate} = require("../Midleware/authz")
 
 router.post("/signup",signup)
 router.post("/login",login)
-router.post("/addProduct",imageupload,addProduct)
+router.post("/addProduct",isAuthenticate,imageupload,addProduct)
 router.get("/products/search",serchProducts)
 router.get("/products",getProducts)
 router.get("/product/:id",getProduct)
-router.delete("/product/:id",deleteProduct)
+router.delete("/product/:id",isAuthenticate,deleteProduct)
 router.put("/product/:id",imageupload,updateProduct)
 
 router.get("/great",(req,res) => {

@@ -59,97 +59,177 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg"
-        onSubmit={handleSubmit}
+  <div
+    style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "10px",
+    }}
+  >
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        width: "100%",
+        maxWidth: "360px",
+        padding: "20px",
+        borderRadius: "10px",
+        boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
+        color: "white",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
       >
-        <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-bold text-center text-gray-800">
-            Create an account
-          </h2>
+        <h2
+          style={{
+            fontSize: "20px",
+            fontWeight: "600",
+            textAlign: "center",
+          }}
+        >
+          Create an account
+        </h2>
 
-          <p className="text-center text-sm text-gray-500">
-            Enter your details below
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "13px",
+          }}
+        >
+          Enter your details below
+        </p>
+
+        <input
+          type="text"
+          name="name"
+          value={user.name}
+          onChange={inputChange}
+          placeholder="Name"
+          required
+          style={{
+            width: "100%",
+            padding: "8px",
+            height: "40px",
+            borderRadius: "6px",
+            border: "1px solid #374151",
+            color: "white",
+            fontSize: "14px",
+            outline: "none",
+          }}
+        />
+
+        <input
+          type="email"
+          name="email"
+          value={user.email}
+          onChange={inputChange}
+          placeholder="Email or Phone Number"
+          required
+          style={{
+            width: "100%",
+            padding: "8px",
+            height: "40px",
+            borderRadius: "6px",
+            border: "1px solid #374151",
+            color: "white",
+            fontSize: "14px",
+            outline: "none",
+          }}
+        />
+        {emailError && (
+          <p style={{ color: "#f87171", fontSize: "12px" }}>
+            {emailError}
           </p>
+        )}
 
-          <input
-            type="text"
-            name="name"
-            value={user.name}
-            onChange={inputChange}
-            placeholder="Name"
-            required
-            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <input
+          type="password"
+          name="password"
+          className="form-control me-2"
+          value={user.password}
+          onChange={inputChange}
+          placeholder="Password"
+          required
+        />
 
-          <input
-            type="email"
-            name="email"
-            value={user.email}
-            onChange={inputChange}
-            placeholder="Email or Phone Number"
-            required
-            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {emailError && (
-            <p className="text-red-500 text-sm">{emailError}</p>
-          )}
-
-          <input
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={inputChange}
-            placeholder="Password"
-            required
-            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <input
-            type="password"
-            name="confirmPassword"
-            value={user.confirmPassword}
-            onChange={inputChange}
-            placeholder="Confirm Password"
-            required
-            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          {passwordError && (
-            <p className="text-red-500 text-sm">{passwordError}</p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
-          >
-            Create Account
-          </button>
-
-          <button
-            type="button"
-            className="w-full border border-gray-300 py-2 rounded-md font-medium flex items-center justify-center gap-2 hover:bg-gray-50 transition"
-          >
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="google"
-              className="w-5 h-5"
-            />
-            Sign up with Google
-          </button>
-
-          <p className="text-sm text-center text-gray-500">
-            Already have an account?{" "}
-            <NavLink to={"/login"}>
-              <span className="text-blue-600 cursor-pointer hover:underline">
-                Login
-              </span>
-            </NavLink>
+        <input
+          type="password"
+          className="form-control me-2"
+          name="confirmPassword"
+          value={user.confirmPassword}
+          onChange={inputChange}
+          placeholder="Confirm Password"
+          required
+        />
+        {passwordError && (
+          <p style={{ color: "#f87171", fontSize: "12px" }}>
+            {passwordError}
           </p>
-        </div>
-      </form>
-    </div>
-  );
+        )}
+
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{
+            width: "100%",
+            fontWeight: "600",
+            cursor: "pointer",
+          }}
+        >
+          Create Account
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-primary"
+          style={{
+            width: "100%",
+            height: "40px",
+            border: "1px solid #374151",
+            borderRadius: "6px",
+            background: "transparent",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="google"
+            style={{ width: "18px", height: "18px" }}
+          />
+          Sign up with Google
+        </button>
+
+        <p
+          style={{
+            fontSize: "12px",
+            textAlign: "center",
+          }}
+        >
+          Already have an account?{" "}
+          <NavLink to={"/login"} style={{
+                color: "#3b82f6",
+                textDecoration: "none",
+                display: "inline",
+              }}>
+              Login
+          </NavLink>
+        </p>
+      </div>
+    </form>
+  </div>
+);
+
 }
 
 export default Signup;
