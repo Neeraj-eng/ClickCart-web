@@ -90,8 +90,27 @@ const Cart = () => {
                   </div>
 
                   {/* ✅ Quantity */}
-                  <div className="quantity" style={{ marginLeft: "20px" , color : "black" }}>
-                    <button onClick={() => handleIncreaseQuantity(item._id)}>
+                  <div
+                    className="quantity"
+                    style={{
+                      marginLeft: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px" // 👈 adds space between all 3 items
+                    }}
+                  >
+                    <button
+                      className="btn btn-primary"
+                      style={{
+                        height: "30px",
+                        width: "30px",
+                        padding: "0",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      onClick={() => handleIncreaseQuantity(item._id)}
+                    >
                       +
                     </button>
 
@@ -99,10 +118,27 @@ const Cart = () => {
                       type="text"
                       value={item.quantity}
                       readOnly
-                      style={{ width: "40px", textAlign: "center" }}
+                      style={{
+                        width: "40px",
+                        textAlign: "center",
+                        height: "30px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                      }}
                     />
 
-                    <button onClick={() => handleDecreaseQuantity(item._id)}>
+                    <button
+                      className="btn btn-secondary"
+                      style={{
+                        height: "30px",
+                        width: "30px",
+                        padding: "0",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      onClick={() => handleDecreaseQuantity(item._id)}
+                    >
                       -
                     </button>
                   </div>
@@ -117,8 +153,9 @@ const Cart = () => {
 
                   {/* ✅ Remove */}
                   <button
+                    className="btn-primary btn"
                     onClick={() => handleRemoveFromCart(item._id)}
-                    style={{ marginLeft: "20px" , color : "black" }}
+                    style={{ marginLeft: "20px", color: "black", backgroundColor: "red" }}
                   >
                     🗑
                   </button>

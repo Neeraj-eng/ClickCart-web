@@ -2,10 +2,13 @@ import { useState } from "react"
 import API from "../axios"
 import { toast } from 'react-hot-toast'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from "react"
+import authContext from "../Context/authcontext"
 
 export default function Login() {
   const navigate = useNavigate()
   const [user, setuser] = useState({ email: "", password: "" })
+  const {setisAuth} = useContext(authContext)
 
   const inputChange = (e) => {
     const { name, value } = e.target;
@@ -26,6 +29,8 @@ export default function Login() {
       );
 
       toast.success("login successful")
+      setisAuth(true);
+      console.log(response.data)
       navigate("/")
     } catch (err) {
       console.log(err.message);
@@ -123,12 +128,14 @@ export default function Login() {
             <button
               type="submit"
               className="btn btn-primary"
+
               style={{
                 width: "100%",
                 cursor: "pointer",
                 transition: "0.2s",
                 marginTop: "12px"
               }}
+
             >
               Login
             </button>
@@ -138,6 +145,7 @@ export default function Login() {
             style={{
               fontSize: "13px",
               marginTop: "10px",
+              marginLeft: "35px"
             }}
           >
             Don't have an account?{" "}
@@ -145,8 +153,9 @@ export default function Login() {
               to="/signup"
               style={{
                 color: "#3b82f6",
-                textDecoration: "none",
+                textDecoration: "underline",
                 display: "inline",
+                fontSize: "14"
               }}
             >
               Signup / Register

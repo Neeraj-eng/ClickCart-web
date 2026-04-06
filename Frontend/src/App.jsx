@@ -13,20 +13,26 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Signup from "./components/Signup"
 import Login from "./components/Login"
 import "./App.css"
+import API from "./axios";
 import { useContext } from "react";
 
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const { addToCart } = useContext(AppContext)
+  const [isAuth,setisAuth] = useState(false)
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
   };
 
+  const fetchauth = async() => {
+  const response = await API.get("/isAuth");
+  setisAuth(response.data);
+  }
 
   return (
     <>
-      <Navbar onSelectCategory={handleCategorySelect}
+      <Navbar onSelectCategory={handleCategorySelect} isAuth={isAuth}
       />
       <Routes>
         <Route
@@ -40,7 +46,7 @@ function App() {
         <Route path="product/:id" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/update/:id" element={<UpdateProduct />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setisAuth={setisAuth}/>} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </>

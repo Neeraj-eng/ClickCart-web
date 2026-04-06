@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import AppContext from "../Context/Context";
 import UpdateProduct from "./UpdateProduct";
+import toast from "react-hot-toast";
 import API from "../axios";
 const Product = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ const Product = () => {
       await API.delete(`/product/${id}`);
       removeFromCart(id);
       console.log("Product deleted successfully");
-      alert("Product deleted successfully");
+      toast("Product deleted successfully");
       refreshData();
       navigate("/");
     } catch (error) {
@@ -45,7 +46,7 @@ const Product = () => {
     if (product.quantity > 0) {
       addToCart(product);
       setProduct(prev => ({ ...prev, quantity: prev.quantity - 1 }));
-      alert("Product added to cart");
+      toast.success("Product added to your cart");
     }
   };
 

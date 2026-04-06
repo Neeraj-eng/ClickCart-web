@@ -138,7 +138,7 @@ const Home = ({ selectedCategory }) => {
                       onClick={(e) => {
                         e.preventDefault();
                         addToCart(product);
-                        toast.success("added successfully");
+                        toast.success("Product added to your cart");
                       }}
                       disabled={!isAvailable}
                     >

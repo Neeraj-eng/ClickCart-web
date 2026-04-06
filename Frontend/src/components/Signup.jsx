@@ -111,17 +111,8 @@ function Signup() {
           value={user.name}
           onChange={inputChange}
           placeholder="Name"
+          className="form-control me-2"
           required
-          style={{
-            width: "100%",
-            padding: "8px",
-            height: "40px",
-            borderRadius: "6px",
-            border: "1px solid #374151",
-            color: "white",
-            fontSize: "14px",
-            outline: "none",
-          }}
         />
 
         <input
@@ -130,17 +121,8 @@ function Signup() {
           value={user.email}
           onChange={inputChange}
           placeholder="Email or Phone Number"
+          className="form-control me-2"
           required
-          style={{
-            width: "100%",
-            padding: "8px",
-            height: "40px",
-            borderRadius: "6px",
-            border: "1px solid #374151",
-            color: "white",
-            fontSize: "14px",
-            outline: "none",
-          }}
         />
         {emailError && (
           <p style={{ color: "#f87171", fontSize: "12px" }}>
@@ -212,15 +194,16 @@ function Signup() {
 
         <p
           style={{
-            fontSize: "12px",
+            fontSize: "13px",
             textAlign: "center",
           }}
         >
           Already have an account?{" "}
           <NavLink to={"/login"} style={{
                 color: "#3b82f6",
-                textDecoration: "none",
+                textDecoration: "underline",
                 display: "inline",
+                fontSize : "14px"
               }}>
               Login
           </NavLink>

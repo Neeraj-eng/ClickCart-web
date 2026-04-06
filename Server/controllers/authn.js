@@ -32,7 +32,7 @@ exports.signup = async (req, res) => {
             name, email, password: hashpassword, role
         })
 
-       
+
 
         user = user.toObject();
         user.password = undefined
@@ -104,6 +104,35 @@ exports.login = async (req, res) => {
     } catch (err) {
         console.log("login error")
         res.status(400).json({
+            message: err.message
+        })
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        const token = req.cookies?.token;
+        if (!token) {
+            console.log("token is missing", req.cookies)
+            return res.status(400).json({
+                message: "token missing"
+            })
+        }
+
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax"
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "Logged out successfully",
+        });
+    } catch (err) {
+        console.log("logout err")
+        res.status(400).json({
+            success: false,
             message: err.message
         })
     }

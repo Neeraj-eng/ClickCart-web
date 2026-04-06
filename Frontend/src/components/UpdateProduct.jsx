@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import API from "../axios";
+import toast from "react-hot-toast";
 
 const UpdateProduct = () => {
   const { id } = useParams();
@@ -45,33 +46,11 @@ const UpdateProduct = () => {
   }, [id]);
 
 
-
-
-
-  // const uploadImageToCloudinary = async () => {
-  //   if (!image) return product.image; // keep old image
-
-  //   const formData = new FormData();
-  //   formData.append("file", image);
-  //   formData.append("upload_preset", "YOUR_UPLOAD_PRESET");
-  //   formData.append("folder", "neeraj");
-    
-  //   const res = await API.post(
-  //     "https://api.cloudinary.com/v1_1/ducsup5k1/image/upload",
-  //     formData
-  //   );
-
-  //   return res.data.secure_url;
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Step 1: Upload image (if changed)
-      // const imageUrl = await uploadImageToCloudinary();
       console.log("images",image);
-      // Step 2: Prepare clean data
       const fromdata = new FormData();
       fromdata.append("name",updateProduct.name);
       fromdata.append("description",updateProduct.description);
@@ -80,24 +59,14 @@ const UpdateProduct = () => {
       fromdata.append("category",updateProduct.category);
       fromdata.append("quantity",Number(updateProduct.quantity));
       fromdata.append("image",image);
-      // const updatedData = {
-      //   name: updateProduct.name,
-      //   description: updateProduct.description,
-      //   brand: updateProduct.brand,
-      //   price: Number(updateProduct.price),
-      //   category: updateProduct.category,
-      //   quantity: Number(updateProduct.quantity),
-      //   productAvailable: updateProduct.productAvailable,
-      //   image: image,
-      // };
+    
 
-      // Step 3: Send JSON to backend
       const response = await API.put(`/product/${id}`, fromdata,{
           withCredentials: true,
         });
 
       console.log("Updated:", response.data);
-      alert("Product updated successfully!");
+      toast("Product updated successfully!");
     } catch (error) {
       console.error("Error updating product:", error.message);
       alert("Failed to update product");

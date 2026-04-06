@@ -3,9 +3,11 @@ import API from "../axios";
 import { BiSun, BiMoon } from "react-icons/bi";
 import { BsCartFill } from "react-icons/bs"; // Bootstrap-style cart from React Icons
 import AppContext from "../Context/Context";
+import toast from "react-hot-toast";
+import authContext from "../Context/authcontext"
 
 
-const Navbar = ({ onSelectCategory, onSearch }) => {
+const Navbar = ({ onSelectCategory}) => {
   const getInitialTheme = () => localStorage.getItem("theme") || "light-theme";
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -15,6 +17,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
   const [noResults, setNoResults] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const {cart} = useContext(AppContext)
+  const {isAuth,setisAuth} = useContext(authContext)
 
   useEffect(() => {
     document.body.className = theme;
@@ -34,6 +37,9 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
       console.error("Error fetching data:", error);
     }
   };
+
+  
+  
 
   useEffect(() => {
     fetchData();
@@ -64,13 +70,29 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
     onSelectCategory(category);
   };
 
+const handlelogout = async () => {
+  try {
+    const response = await API.post(
+      "/logout",
+      {},
+    );
+
+    if (response.data.success) {
+      toast.success("User logged out successfully");
+      setisAuth(false)
+    }
+  } catch (err) {
+    toast.error("Logout error");
+  }
+};
+
   const categories = ["Laptop", "Headphone", "Mobile", "Electronics", "Toys", "Fashion"];
 
   return (
     <header>
        <nav className="navbar navbar-expand-lg fixed-top">
         <div className="container-fluid">
-          <a className="navbar-brand" href="https://codolio.com/profile/neeraj_nagar">
+          <a className="navbar-brand">
           ClickCart
           </a> 
           <button
@@ -118,7 +140,8 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
               </li>
             </ul>
             
-            <a className="nav-link px-2" href="/login">Login</a>
+            {isAuth === true ? (<button className="nav-link px-2"  onClick={handlelogout}>Logout</button>) 
+            : (<a className="nav-link px-2" href="/login">Login</a>)}
       
             <button className="btn btn-link me-3" onClick={toggleTheme}>
               {theme === "dark-theme" ? <BiSun size={22} /> : <BiMoon size={22} />}
