@@ -1,36 +1,64 @@
-const express = require("express")
-const {connect} = require("./config/mongoconnect")
-const router = require("./routes/Router")
-const cookieparser = require("cookie-parser")
-const {cloudinaryconnect} = require("./config/cloudnaryconnect")
-const fileupload = require("express-fileupload")
-const cors = require("cors")
-const app = express()
+import express from "express";
+import serverless from "serverless-http";
+import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
+import cors from "cors";
+import dotenv from "dotenv";
 
-require("dotenv").config()
-connect();
-cloudinaryconnect();
+import { connect } from "./config/mongoconnect.js";
+import { Cloudinaryconnect } from "./config/Cloudinaryconnect.js";
+import router from "./routes/Router.js";
+
+dotenv.config();
+const app = express();
+
+
+let isConnected = false;
+
+const init = async () => {
+  try {
+    console.log("Connecting to DB...");
+    await connect();
+    await Cloudinaryconnect();
+    isConnected = true;
+  } catch (error) {
+    console.error("Init error:", error);
+    throw error; 
+  }
+};
+
+app.use(async (req, res, next) => {
+  try {
+    if (!isConnected) {
+      await init();
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Server initialization failed" });
+  }
+});
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
-app.use(express.urlencoded({extended : true}));
-app.use(express.json())
-app.use(cookieparser())
-app.use(fileupload({
-  useTempFiles : true,
-  tempFileDir: "./tmp/"
-}))
+app.use(express.json({ limit: "4mb" }));
+app.use(express.urlencoded({ extended: true, limit: "4mb" }));
+app.use(cookieParser());
+
+app.use(fileUpload({
+  useTempFiles: false,
+}));
 
 
-app.get("/",(req,res)=>{
-    res.send("hello from server")
-})
-
-app.use("/api",router)
-
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.get("/", (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Server is running 🚀",
+  });
 });
+app.use("/api", router);
+
+
+export default serverless(app);

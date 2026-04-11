@@ -30,10 +30,11 @@ const Product = () => {
       await API.delete(`/product/${id}`);
       removeFromCart(id);
       console.log("Product deleted successfully");
-      toast("Product deleted successfully");
+      toast.success("Product deleted successfully");
       refreshData();
       navigate("/");
     } catch (error) {
+      toast.error("User is not logged in");
       console.error("Error deleting product:", error);
     }
   };

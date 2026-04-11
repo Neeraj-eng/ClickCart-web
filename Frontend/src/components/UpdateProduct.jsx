@@ -50,26 +50,31 @@ const UpdateProduct = () => {
     e.preventDefault();
 
     try {
-      console.log("images",image);
-      const fromdata = new FormData();
-      fromdata.append("name",updateProduct.name);
-      fromdata.append("description",updateProduct.description);
-      fromdata.append("brand",updateProduct.brand);
-      fromdata.append("price",Number(updateProduct.price));
-      fromdata.append("category",updateProduct.category);
-      fromdata.append("quantity",Number(updateProduct.quantity));
-      fromdata.append("image",image);
-    
+      console.log("images", image);
+      const formdata = new FormData();
+      formdata.append("name", updateProduct.name);
+      formdata.append("description", updateProduct.description);
+      formdata.append("brand", updateProduct.brand);
+      formdata.append("price", Number(updateProduct.price));
+      formdata.append("category", updateProduct.category);
+      formdata.append("quantity", Number(updateProduct.quantity));
+      if (image instanceof File) {
+        formdata.append("image", image);
+      } else {
+        console.log()
+        formdata.append("image",product.image);
+      }
 
-      const response = await API.put(`/product/${id}`, fromdata,{
-          withCredentials: true,
-        });
+
+      const response = await API.put(`/product/${id}`, formdata, {
+        withCredentials: true,
+      });
 
       console.log("Updated:", response.data);
-      toast("Product updated successfully!");
+      toast.success("Product updated successfully!");
     } catch (error) {
       console.error("Error updating product:", error.message);
-      alert("Failed to update product");
+      toast.error("Failed to update product");
     }
   };
 
@@ -99,7 +104,6 @@ const UpdateProduct = () => {
             <input
               type="text"
               className="form-control"
-              placeholder={product.name}
               value={updateProduct.name}
               onChange={handleChange}
               name="name"
@@ -113,7 +117,6 @@ const UpdateProduct = () => {
               type="text"
               name="brand"
               className="form-control"
-              placeholder={product.brand}
               value={updateProduct.brand}
               onChange={handleChange}
               id="brand"
@@ -126,7 +129,6 @@ const UpdateProduct = () => {
             <input
               type="text"
               className="form-control"
-              placeholder={product.description}
               name="description"
               onChange={handleChange}
               value={updateProduct.description}
@@ -142,7 +144,6 @@ const UpdateProduct = () => {
               className="form-control"
               onChange={handleChange}
               value={updateProduct.price}
-              placeholder={product.price}
               name="price"
               id="price"
             />
@@ -176,7 +177,6 @@ const UpdateProduct = () => {
               type="number"
               className="form-control"
               onChange={handleChange}
-              placeholder={product.quantity}
               value={updateProduct.quantity}
               name="quantity"
               id="quantity"
@@ -187,7 +187,11 @@ const UpdateProduct = () => {
               <h6>Image</h6>
             </label>
             <img
-              src={image ? URL.createObjectURL(image) : product.image}
+              src={
+                image instanceof File
+                  ? URL.createObjectURL(image)
+                  : image || product.image
+              }
               alt={product.imagename}
               style={{
                 width: "100%",

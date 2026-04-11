@@ -90,14 +90,11 @@ export default function Login() {
               placeholder="@gmail.com"
               required
               onChange={inputChange}
+              className="form-control me-2"
               style={{
                 width: "100%",
                 height: "40px",
-                padding: "8px",
-                borderRadius: "6px",
                 border: "1px solid #374151",
-                fontSize: "14px",
-                outline: "none",
               }}
             />
           </div>
@@ -110,16 +107,11 @@ export default function Login() {
               required
               onChange={inputChange}
               value={user.password}
+              className="form-control me-2"
               style={{
                 width: "100%",
                 height: "40px",
-                padding: "8px",
-                borderRadius: "6px",
                 border: "1px solid #374151",
-                fontSize: "14px",
-                outline: "none",
-                marginTop: "12px"
-
               }}
             />
           </div>

@@ -29,8 +29,9 @@ const AddProduct = () => {
 
     const formData = new FormData();
 
-    if (!image) {
-      toast.error("Please select an image");
+    if ( !product.name, !product.brand, !product.description, !product.price,
+      !product.category, !product.quantity, !image) {
+      toast.error("All fields are required");
       return;
     }
 
