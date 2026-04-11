@@ -58,6 +58,7 @@ app.get("/", (req, res) => {
     message: "Server is running 🚀",
   });
 });
+
 app.use("/api", router);
 
 
